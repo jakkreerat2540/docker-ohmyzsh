@@ -34,7 +34,7 @@ install_docker_rhel_yum(){
 
     #install docker-ce
     yum install -y yum-utils
-    yum-config-manager --add-repo https://download.docker.com/linux/rhel/docker-ce.repo
+    yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
     yes | yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
     systemctl start docker
     systemctl enable docker 
@@ -68,8 +68,6 @@ main (){
     elif [ $osversion == "debian" ]; then
         install_docker_ubuntu
     elif [ $osversion == "fedora" ]; then
-        install_docker_rhel_yum
-    elif [ $osversion == "rhel" ]; then
         install_docker_rhel_yum
     else
         echo "OS not supported"
