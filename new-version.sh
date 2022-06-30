@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 # define variables
 os=`cat /etc/os-release | grep  "^ID="`
 osversion=`echo $os |  sed 's/"//g' | sed 's/ID=//g'`
