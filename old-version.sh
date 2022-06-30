@@ -8,16 +8,17 @@ get_service_docker=`systemctl status docker | grep "docker.service" | awk 'NR==1
 
 install_docker_compose () {
 
+    rm -rf /usr/local/bin/docker-compose
     #install docker-compose
     curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
     ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
-    sleep 2
-    systemctl enable docker.socket && systemctl start docker.socket
-    sleep 2
-    systemctl enable containerd && systemctl start containerd 
-    sleep 2
-    systemctl enable docker && systemctl start docker
+    systemctl enable docker.socket 
+    systemctl start docker.socket
+    systemctl enable containerd 
+    systemctl start containerd 
+    systemctl enable docker
+    systemctl start docker
 
 }
 
@@ -25,14 +26,13 @@ install_docker_compose () {
 install_docker_ubuntu () {
     
     #install docker-ce
-    apt-get -y update
+    apt-get -y update && apt-get -y upgrade
     apt-get -y install ca-certificates curl gnupg lsb-release make
-    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo  gpg --batch --yes --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo \
       "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
       $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    apt -y update
-    apt-get -y install docker-ce docker-ce-cli containerd.io
+    apt -y update && apt -y install docker-ce docker-ce-cli containerd.io
     
    
 
@@ -65,10 +65,13 @@ docker_rockyos(){
 remove_docker_ubuntu () {
     
     #remove docker-ce
+    
     apt-get -y remove docker-ce docker-ce-cli containerd.io docker-compose-plugin
     apt-get -y autoremove
+    apt-get -y clean
     rm -rf /var/lib/docker
     rm -rf /etc/docker
+    rm -rf /var/run/docker.sock
 
 }
 
@@ -90,11 +93,24 @@ remove_docker_rockyos () {
     dnf -y autoremove
     rm -rf /var/lib/docker
     rm -rf /var/lib/containerd
+    rm -rf /var/run/docker.sock
+    dnf -y clean all
+    dnf makecache
 
 }
 
-install_afeter_remove(){
+stop_service() {
+    
+    systemctl stop containerd
+    systemctl stop docker.socket 
+    systemctl stop docker
 
+}
+
+
+install_afeter_remove(){
+    
+    
     if [ $osversion == "ubuntu" ]; then
             install_docker_ubuntu
         elif [ $osversion == "centos" ]; then
@@ -112,6 +128,22 @@ install_afeter_remove(){
 
 }
 
+check_service() {
+
+    dockers=`systemctl status docker  awk 'NR==3{print $2}'`
+    containerds=`systemctl status containerd  awk 'NR==3{print $2}'`
+    docker_socket=`systemctl status docker.socket  awk 'NR==3{print $2}'`
+
+    if [ $dockers == "active" ] && [ $containerds == "active" ] && [ $docker_socket == "active" ]; then
+        echo "Docker and containerd are running"
+    else
+        echo "docker status:"$dockers "containerd status:"$containerds "docker.socket status:"$docker_socket
+    fi
+
+
+}
+
+
 
 main (){
 
@@ -120,15 +152,21 @@ main (){
     usermod -aG docker $USER
 
     if [ $get_service_docker == "docker.service" ]; then
+        
         if [ $osversion == "ubuntu" ]; then
+            stop_service
             remove_docker_ubuntu
         elif [ $osversion == "centos" ]; then
+            stop_service
             remove_docker_rhel_yum
         elif [ $osversion == "rocky" ]; then
+            stop_service
            remove_docker_rockyos
         elif [ $osversion == "debian" ]; then
+            stop_service
             remove_docker_ubuntu
         elif [ $osversion == "fedora" ]; then
+            stop_service
             install_docker_rhel_yum
         else
             echo "OS not supported"
@@ -150,9 +188,11 @@ main (){
         fi
     fi
 
-    install_docker_compose
+    
     echo "Docker installed!"
 
 }
 
 main
+install_docker_compose
+check_service
