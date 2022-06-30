@@ -4,7 +4,8 @@
 # define variables
 os=`cat /etc/os-release | grep  "^ID="`
 osversion=`echo $os |  sed 's/"//g' | sed 's/ID=//g'`
-get_service_docker=`systemctl status docker | grep "docker.service" | awk 'NR==1{print $2}'`
+get_service_docker=`systemctl status docker | awk 'NR==1{print $2}'`
+not_found="Unit"
 
 install_docker_compose () {
 
