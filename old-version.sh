@@ -130,9 +130,9 @@ install_afeter_remove(){
 
 check_service() {
 
-    dockers=`systemctl status docker  awk 'NR==3{print $2}'`
-    containerds=`systemctl status containerd  awk 'NR==3{print $2}'`
-    docker_socket=`systemctl status docker.socket  awk 'NR==3{print $2}'`
+    dockers=`systemctl status docker | awk 'NR==3{print $2}'`
+    containerds=`systemctl status containerd | awk 'NR==3{print $2}'`
+    docker_socket=`systemctl status docker.socket | awk 'NR==3{print $2}'`
 
     if [ $dockers == "active" ] && [ $containerds == "active" ] && [ $docker_socket == "active" ]; then
         echo "Docker and containerd are running"
