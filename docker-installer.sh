@@ -44,7 +44,7 @@ install_docker_rhel_yum(){
     #install docker-ce
     yum install -y yum-utils
     yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    yes | yum install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    yum -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
    
      
 
