@@ -38,6 +38,13 @@ install_docker_ubuntu () {
 
 }
 
+install_docker_fedora(){
+
+    dnf -y install dnf-plugins-core
+    dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
+    dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+}
 
 install_docker_rhel_yum(){
 
@@ -61,6 +68,13 @@ docker_rockyos(){
 }
 
 
+remove_docker_fedora(){
+
+    dnf remove docker-ce docker-ce-cli containerd.io docker-compose-plugin
+    rm -rf /var/lib/docker
+    rm -rf /var/lib/containerd
+
+}
 
 remove_docker_ubuntu () {
     
@@ -120,7 +134,7 @@ install_afeter_remove(){
         elif [ $osversion == "debian" ]; then
             install_docker_ubuntu
         elif [ $osversion == "fedora" ]; then
-            install_docker_rhel_yum
+            install_docker_fedora
         else
             echo "OS not supported"
         fi
@@ -167,7 +181,7 @@ main (){
             remove_docker_ubuntu
         elif [ $osversion == "fedora" ]; then
             stop_service
-            install_docker_rhel_yum
+            remove_docker_fedora
         else
             echo "OS not supported"
         fi
@@ -182,7 +196,7 @@ main (){
         elif [ $osversion == "debian" ]; then
             install_docker_ubuntu
         elif [ $osversion == "fedora" ]; then
-            install_docker_rhel_yum
+            install_docker_fedora
         else
             echo "OS not supported"
         fi
