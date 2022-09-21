@@ -15,7 +15,7 @@ install_docker_compose () {
     curl -SL https://github.com/docker/compose/releases/download/v2.11.0/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
     chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
     ln -s $DOCKER_CONFIG/cli-plugins/docker-compose /usr/local/bin/docker-compose
-    
+    chmod +x /usr/local/bin/docker-compose
     # show version docker compose
     docker compose version
     systemctl enable docker.socket 
