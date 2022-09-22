@@ -6,3 +6,8 @@
 ### zsh with plugin 
 
 #### curl -s **https://raw.githubusercontent.com/jakkreerat2540/docker-ohmyzsh/main/install-zsh.sh** | bash -s --
+
+
+
+### REF Generate Certificate 
+##https://github.com/kekru/linux-utils.git
