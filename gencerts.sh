@@ -64,8 +64,17 @@ function usage {
     exit 1
 }
 
+
+function createDhparam {
+
+    sudo openssl dhparam -out $TARGETDIR/dhparam.pem 2048
+
+
+}
+
+
 function createCA {
-    openssl genrsa -aes256 -passout pass:$PASSWORD -out $TARGETDIR/ca-key.pem 4096
+    openssl genrsa -aes256 -passout pass:$PASSWORD -out $TARGETDIR/ca-key.pem 2048
     openssl req -passin pass:$PASSWORD -new -x509 -days $EXPIRATIONDAYS -key $TARGETDIR/ca-key.pem -sha256 -out $TARGETDIR/ca.pem -subj $CASUBJSTRING
     
     chmod 0400 $TARGETDIR/ca-key.pem
@@ -88,7 +97,7 @@ function createServerCert {
         IPSTRING=",IP:$SERVERIP"
     fi
 
-    openssl genrsa -out $TARGETDIR/server-key.pem 4096
+    openssl genrsa -out $TARGETDIR/server-key.pem 2048
     openssl req -subj "/CN=$NAME" -new -key $TARGETDIR/server-key.pem -out $TARGETDIR/server.csr
     echo "subjectAltName = DNS:$NAME$IPSTRING" > $TARGETDIR/extfile.cnf
     openssl x509 -passin pass:$PASSWORD -req -days $EXPIRATIONDAYS -in $TARGETDIR/server.csr -CA $TARGETDIR/ca.pem -CAkey $TARGETDIR/ca-key.pem -CAcreateserial -out $TARGETDIR/server-cert.pem -extfile $TARGETDIR/extfile.cnf
@@ -102,7 +111,7 @@ function createServerCert {
 function createClientCert {
     checkCAFilesExist
 
-    openssl genrsa -out $TARGETDIR/client-key.pem 4096
+    openssl genrsa -out $TARGETDIR/client-key.pem 2048
     openssl req -subj "/CN=$NAME" -new -key $TARGETDIR/client-key.pem -out $TARGETDIR/client.csr
     echo "extendedKeyUsage = clientAuth" > $TARGETDIR/extfile.cnf
     openssl x509 -passin pass:$PASSWORD -req -days $EXPIRATIONDAYS -in $TARGETDIR/client.csr -CA $TARGETDIR/ca.pem -CAkey $TARGETDIR/ca-key.pem -CAcreateserial -out $TARGETDIR/client-cert.pem -extfile $TARGETDIR/extfile.cnf
@@ -128,6 +137,8 @@ elif [[ $MODE = "server" ]]; then
     createServerCert
 elif [[ $MODE = "client" ]]; then
     createClientCert
+elif [[ $MODE = "dhparam" ]]; then
+    createDhparam
 else
     usage
 fi
