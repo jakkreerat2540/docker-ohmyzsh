@@ -67,7 +67,7 @@ function usage {
 
 function createDhparam {
 
-    sudo openssl dhparam -out $TARGETDIR/dhparam.pem 2048
+    openssl dhparam -out $TARGETDIR/dhparam.pem 2048
 
 
 }
@@ -77,8 +77,13 @@ function createCA {
     openssl genrsa -aes256 -passout pass:$PASSWORD -out $TARGETDIR/ca-key.pem 2048
     openssl req -passin pass:$PASSWORD -new -x509 -days $EXPIRATIONDAYS -key $TARGETDIR/ca-key.pem -sha256 -out $TARGETDIR/ca.pem -subj $CASUBJSTRING
     
+  
+    openssl dhparam -out $TARGETDIR/dhparam.pem 2048
+    chmod 0400 $TARGETDIR/dhparam.pem
     chmod 0400 $TARGETDIR/ca-key.pem
     chmod 0444 $TARGETDIR/ca.pem
+    
+    
 }
 
 function checkCAFilesExist {
