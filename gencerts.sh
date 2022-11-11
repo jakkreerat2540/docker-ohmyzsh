@@ -142,8 +142,8 @@ elif [[ $MODE = "server" ]]; then
     createServerCert
 elif [[ $MODE = "client" ]]; then
     createClientCert
-elif [[ $MODE = "dhparam" ]]; then
-    createDhparam
+#elif [[ $MODE = "dhparam" ]]; then
+#    createDhparam
 else
     usage
 fi
