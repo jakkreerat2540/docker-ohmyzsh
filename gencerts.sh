@@ -65,12 +65,12 @@ function usage {
 }
 
 
-function createDhparam {
+#function createDhparam {
 
-    openssl dhparam -out $TARGETDIR/dhparam.pem 2048
+#    openssl dhparam -out $TARGETDIR/dhparam.pem 2048
 
 
-}
+#}
 
 
 function createCA {
