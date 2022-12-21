@@ -93,6 +93,14 @@ main (){
         else 
             install_ubuntu
         fi
+    elif [ $osversion == "rhel" ]; then
+        read -p "Do you want to install poshthemes? [y/n] " -n 1 -r
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            install_centos
+            install_poshthemes
+        else 
+            install_centos
+        fi
     else
         echo "OS not supported"
     fi
