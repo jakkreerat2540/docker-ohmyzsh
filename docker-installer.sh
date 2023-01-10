@@ -167,8 +167,9 @@ check_service() {
 main (){
 
 
-    sudo groupadd docker
+    #sudo groupadd docker
     sudo usermod -aG docker $USER # non root user
+    newgrp docker
 
     if [ $get_service_docker == "docker.service" ]; then
         
