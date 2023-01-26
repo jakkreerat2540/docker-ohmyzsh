@@ -70,7 +70,7 @@ function createCA {
     
   
     #openssl dhparam -out $TARGETDIR/dhparam.pem 2048
-    chmod 0400 $TARGETDIR/dhparam.pem
+    #chmod 0400 $TARGETDIR/dhparam.pem
     chmod 0400 $TARGETDIR/ca-key.pem
     chmod 0444 $TARGETDIR/ca.pem
     
