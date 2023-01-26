@@ -19,7 +19,7 @@ function create_daemon_json {
            rm -rf $deamonpath
            echo "Creating daemon.json"
            echo '{' > $deamonpath
-           echo '  "data-root": "/data/docker",' >> $deamonpath
+           #echo '  "data-root": "/data/docker",' >> $deamonpath
            echo '  "log-driver": "local",' >> $deamonpath
            echo '  "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"], ' >> $deamonpath
            echo '  "tls": true,' >> $deamonpath
