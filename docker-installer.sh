@@ -67,7 +67,8 @@ docker_rockyos(){
     #install docker-ce
     dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
     yes | dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-   
+
+
     
 
 }
