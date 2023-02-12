@@ -18,29 +18,33 @@ function create_daemon_json {
        if [ -f $deamonpath ]; then
            rm -rf $deamonpath
            echo "Creating daemon.json"
-           echo '{' > $deamonpath
-           #echo '  "data-root": "/data/docker",' >> $deamonpath
-           echo '  "log-driver": "local",' >> $deamonpath
-           echo '  "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"], ' >> $deamonpath
-           echo '  "tls": true,' >> $deamonpath
-           echo '  "tlscacert": "/etc/docker/certs/ca.pem",' >> $deamonpath
-           echo '  "tlscert": "/etc/docker/certs/server-cert.pem",' >> $deamonpath
-           echo '  "tlskey": "/etc/docker/certs/server-key.pem",' >> $deamonpath
-           echo '  "tlsverify": true' >> $deamonpath
-           echo '}' >> $deamonpath 
+           cat << EOF > $deamonpath
+           {
+           #echo '  "data-root": "/data/docker",
+           "log-driver": "local",
+           "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"],
+           "tls": true,
+           "tlscacert": "/etc/docker/certs/ca.pem",
+           "tlscert": "/etc/docker/certs/server-cert.pem",
+           "tlskey": "/etc/docker/certs/server-key.pem",
+           "tlsverify": true
+           }
+EOF
 
        else
-           echo "Creating daemon.json"
-           echo '{' > $deamonpath
-           echo '  "log-driver": "local",' >> $deamonpath
-           echo '  "data-root": "/data/docker",' >> $deamonpath
-           echo '  "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"], ' >> $deamonpath
-           echo '  "tls": true,' >> $deamonpath
-           echo '  "tlscacert": "/etc/docker/certs/ca.pem",' >> $deamonpath
-           echo '  "tlscert": "/etc/docker/certs/server-cert.pem",' >> $deamonpath
-           echo '  "tlskey": "/etc/docker/certs/server-key.pem",' >> $deamonpath
-           echo '  "tlsverify": true' >> $deamonpath
-           echo '}' >> $deamonpath 
+               echo "Creating daemon.json"
+               cat << EOF > $deamonpath
+               {
+               #echo '  "data-root": "/data/docker",
+               "log-driver": "local",
+               "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"],
+               "tls": true,
+               "tlscacert": "/etc/docker/certs/ca.pem",
+               "tlscert": "/etc/docker/certs/server-cert.pem",
+               "tlskey": "/etc/docker/certs/server-key.pem",
+               "tlsverify": true
+                }
+EOF    
        fi
 
 }
