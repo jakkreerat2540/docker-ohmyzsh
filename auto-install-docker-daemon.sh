@@ -74,7 +74,7 @@ function edit_docker_service {
 
 function main {
 
-       count=`ls -la /etc/docker | grep "certs" | wc -l`
+       count=`ls -la /etc/docker | grep  -w "certs" | wc -l`
        if [ $count == '1' ]; then
               create_daemon_json
               edit_docker_service
