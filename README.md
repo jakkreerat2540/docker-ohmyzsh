@@ -13,5 +13,10 @@ curl -s https://raw.githubusercontent.com/jakkreerat2540/docker-ohmyzsh/main/ins
 ```
 
 
+```sh
+curl -fsSL https://get.docker.com -o get-docker.sh
+```
+
+
 ### REF Generate Certificate 
 ##https://github.com/kekru/linux-utils.git
