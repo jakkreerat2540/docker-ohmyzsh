@@ -16,36 +16,41 @@ dockerservicepath="/lib/systemd/system/docker.service"
 function create_daemon_json {
 
        if [ -f $deamonpath ]; then
-           rm -rf $deamonpath
-           echo "Creating daemon.json"
-           cat << EOF > $deamonpath
-           {
-           #echo '  "data-root": "/data/docker",
-           "log-driver": "local",
-           "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"],
-           "tls": true,
-           "tlscacert": "/etc/docker/certs/ca.pem",
-           "tlscert": "/etc/docker/certs/server-cert.pem",
-           "tlskey": "/etc/docker/certs/server-key.pem",
-           "tlsverify": true
-           }
-EOF
+              rm -rf $deamonpath
+              echo "Creating daemon.json"
+              echo '{' > $deamonpath
+              #echo '"data-root": "/data/docker"', > $deamonpath
+              #echo '"log-driver": "local"', >> $deamonpath
+              echo '        "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"'], >> $deamonpath
+              echo '        "tls"': true, >> $deamonpath 
+              echo '        "tlscacert": "/etc/docker/certs/ca.pem"', >> $deamonpath
+              echo '        "tlscert": "/etc/docker/certs/server-cert.pem"', >> $deamonpath 
+              echo '        "tlskey": "/etc/docker/certs/server-key.pem"', >> $deamonpath
+              echo '        "tlsverify"': true , >> $deamonpath
+              echo '        "log-driver": "json-file"' , >> $deamonpath
+              echo '        "log-opts": { "max-size": "1024m",  "max-file": "3" , "tag": "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"} ' >> $deamonpath
+              echo '}' >> $deamonpath
+
 
        else
-               echo "Creating daemon.json"
-               cat << EOF > $deamonpath
-               {
-               #echo '  "data-root": "/data/docker",
-               "log-driver": "local",
-               "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"],
-               "tls": true,
-               "tlscacert": "/etc/docker/certs/ca.pem",
-               "tlscert": "/etc/docker/certs/server-cert.pem",
-               "tlskey": "/etc/docker/certs/server-key.pem",
-               "tlsverify": true
-                }
-EOF    
+
+              echo "Creating daemon.json"
+              echo '{' > $deamonpath
+              #echo '"data-root": "/data/docker"', > $deamonpath
+              #echo '"log-driver": "local"', >> $deamonpath
+              echo '        "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2376"'], >> $deamonpath
+              echo '        "tls"': true, >> $deamonpath 
+              echo '        "tlscacert": "/etc/docker/certs/ca.pem"', >> $deamonpath
+              echo '        "tlscert": "/etc/docker/certs/server-cert.pem"', >> $deamonpath 
+              echo '        "tlskey": "/etc/docker/certs/server-key.pem"', >> $deamonpath
+              echo '        "tlsverify"': true , >> $deamonpath
+              echo '        "log-driver": "json-file"' , >> $deamonpath
+              echo '        "log-opts": { "max-size": "1024m",  "max-file": "3" , "tag": "{{.ImageName}}|{{.Name}}|{{.ImageFullID}}|{{.FullID}}"} ' >> $deamonpath
+              echo '}' >> $deamonpath
        fi
+
+
+
 
 }
 
@@ -89,8 +94,6 @@ function main {
               echo "pls generate certs first"
        fi
 
-       
-       
        echo "i don't know what to do next"
 }
 
