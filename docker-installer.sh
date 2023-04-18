@@ -164,6 +164,25 @@ check_service() {
 }
 
 
+create_docker_daemon() {
+
+    # create docker daemon 
+    echo "{
+    \"data-root\": \"/var/lib/docker\",
+    \"log-driver\": \"json-file\",
+    \"log-opts\": {
+        \"max-size\": \"100m\",
+        \"max-file\": \"3\"
+     }
+     }
+    " > /etc/docker/daemon.json
+
+
+
+
+}
+
+
 
 main (){
 
