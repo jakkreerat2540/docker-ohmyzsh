@@ -235,4 +235,5 @@ main (){
 
 main
 install_docker_compose
+create_docker_daemon
 check_service
