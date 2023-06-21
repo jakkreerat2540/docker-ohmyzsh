@@ -14,7 +14,7 @@ curl -s https://raw.githubusercontent.com/jakkreerat2540/docker-ohmyzsh/main/ins
 
 
 ```sh
-curl -fsSL https://get.docker.com -o get-docker.sh
+curl -fsSL https://get.docker.com  | bash -s --
 ```
 
 
