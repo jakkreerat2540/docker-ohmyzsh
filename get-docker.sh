@@ -666,3 +666,6 @@ do_install() {
 # wrapped up in a function so that we have some protection against only getting
 # half the file during "curl | sh"
 do_install
+
+# enavle service docker for almalinux
+systemctl enable docker.socket docker.service containerd.service --now
