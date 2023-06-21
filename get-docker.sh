@@ -457,7 +457,7 @@ do_install() {
 			echo_docker_as_nonroot
 			exit 0
 			;;
-		centos|fedora|rhel|rocky)
+		centos|fedora|rhel|rocky|almalinux)
 			if [ "$(uname -m)" != "s390x" ] && [ "$lsb_dist" = "rhel" ]; then
 				echo "Packages for RHEL are currently only available for s390x."
 				exit 1
@@ -475,6 +475,13 @@ do_install() {
 				enable_channel_flag="--set-enabled"
 				disable_channel_flag="--set-disabled"
 				pre_reqs="dnf-plugins-core"
+				pkg_suffix="el$dist_version"			
+			elif [ "$lsb_dist" = "almalinux" ]; then
+				pkg_manager="dnf"
+				config_manager="dnf config-manager"
+				enable_channel_flag="--set-enabled"
+				disable_channel_flag="--set-disabled"
+				pre_reqs="dnf-plugins-core"
 				pkg_suffix="el$dist_version"
 			else
 				pkg_manager="yum"
@@ -485,8 +492,14 @@ do_install() {
 				pkg_suffix="el"
 			fi
 
-			if [ "$lsb_dist" = "rocky" ]; then
+			if [ "$lsb_dist" = "rocky" ] || [ "$lsb_dist" = "almalinux" ]; then
 				repo_file_url="$DOWNLOAD_URL/linux/centos/$REPO_FILE"
+				if [ "$lsb_dist" = "rocky" ]; then
+					dnf -y install eple-release
+				else
+					#dnf -y install centos-release-stream
+					echo "only rocky os is supported"
+				fi
 			else
 				repo_file_url="$DOWNLOAD_URL/linux/$lsb_dist/$REPO_FILE"
 			fi
