@@ -61,7 +61,8 @@ main (){
             install_ubuntu
         fi
         
-    elif [ $osversion == "centos" ]; then
+    # if osversion is centos or almalinux
+    elif [ $osversion == "centos" ] || [ $osversion == "almalinux" ]; then
         read -p "Do you want to install poshthemes? [y/n] " -n 1 -r
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             install_centos
